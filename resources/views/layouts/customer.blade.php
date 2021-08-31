@@ -112,8 +112,8 @@
             <ul class="nav navbar-nav">
               <li @yield('homeactive') ><a href="{{ route('home') }}">Home</a></li>
               <li @yield('storeactive')><a href="{{ route('store') }}">Store</a></li>
-              <li @yield('blogactive')><a href="{{ route('about') }}">Blog</a></li>
-              <li @yield('contactsactive')><a href="{{ route('about') }}">Contacts</a></li>
+              <li @yield('blogactive')><a href="{{ route('blog') }}">Blog</a></li>
+              <li @yield('contactsactive')><a href="{{ route('contacts') }}">Contacts</a></li>
               <li class="dropdown">
                 <a href="{{ route('store') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   More <i class="ion-android-arrow-dropdown"></i>

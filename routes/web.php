@@ -15,9 +15,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () { return view('index.index');})->name('home');
 
+//STORE + CUSTOMER PANEL
+
 Route::get('/store/index', function () {  return view('store.index'); })->name('store');
 Route::get('/store/product', function () { return view('store.product'); })->name('product');
 Route::get('/about', function () { return view('index.about'); })->name('about');
+Route::get('/blog', function () { return view('blog.index'); })->name('blog');
+Route::get('/contacts', function () { return view('contacts.index'); })->name('contacts');
+
+//ADMIN PANEL
 
 Route::get('/admin/dashboard', function () { return view('admin.dashboard'); })->name('admindashboard');
 
