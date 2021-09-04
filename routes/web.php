@@ -17,8 +17,8 @@ Route::get('/', function () { return view('index.index');})->name('home');
 
 //STORE + CUSTOMER PANEL
 
-Route::get('/store/index', function () {  return view('store.index'); })->name('store');
-Route::get('/store/product', function () { return view('store.product'); })->name('product');
+Route::get('/store/index','App\Http\Controllers\ProducttableController@products')->name('store');
+Route::get('/store/product/{id}', 'App\Http\Controllers\ProducttableController@productdetails')->name('product');
 Route::get('/about', function () { return view('index.about'); })->name('about');
 Route::get('/blog', function () { return view('blog.index'); })->name('blog');
 Route::get('/contacts', function () { return view('contacts.index'); })->name('contacts');
@@ -27,10 +27,14 @@ Route::get('/contacts', function () { return view('contacts.index'); })->name('c
 
 Route::get('/admin/dashboard', function () { return view('admin.dashboard'); })->name('admindashboard');
 
-Route::get('/admin/addproduct', 'App\Http\Controllers\ProducttableController@index')->name('addproduct');
+Route::get('/admin/addproduct', 'App\Http\Controllers\ProducttableController@create')->name('addproduct');
 Route::post('/admin/addproduct', 'App\Http\Controllers\ProducttableController@store')->name('addproductpost');
 
 Route::get('/admin/producttable', 'App\Http\Controllers\ProducttableController@show')->name('producttable');
+
+Route::get('/admin/removeproduct/{id}', 'App\Http\Controllers\ProducttableController@deleteproduct')->name('removeproduct');
+Route::get('/admin/updateproduct/{id}', 'App\Http\Controllers\ProducttableController@showupdateproduct')->name('updateproduct');
+Route::post('/admin/updateproduct/{id}', 'App\Http\Controllers\ProducttableController@updateproduct');
 
 Route::get('/admin/specificationtable', 'App\Http\Controllers\SpecificationController@show')->name('specification');
 

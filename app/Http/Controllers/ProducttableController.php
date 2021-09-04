@@ -15,6 +15,7 @@ use App\Models\battery;
 use App\Models\memory;
 use Illuminate\Http\Request;
 use App\Http\Requests\addproductpostrequest;
+use App\Http\Requests\updateproductpostrequest;
 
 class ProducttableController extends Controller
 {
@@ -23,7 +24,7 @@ class ProducttableController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function create()
     {   
         $categorylist = category::all();
         $oslist = os::all();
@@ -37,22 +38,7 @@ class ProducttableController extends Controller
         return view('admin.addproduct', compact('categorylist','oslist','displaylist','processorlist','graphicslist','memorylist','hard_drivelist','power_supplylist','batterylist'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(addproductpostrequest $request)
     {
         $product = new producttable;
@@ -134,7 +120,7 @@ class ProducttableController extends Controller
         return view('admin.producttable',compact('data'));
     }
 
-    public function deleteproducttable($id)
+    public function deleteproduct($id)
     {   
         //DELETE product,specification FROM `product` JOIN `specification` ON specification.product_id = product.id WHERE product.id = "4";
         
@@ -146,10 +132,10 @@ class ProducttableController extends Controller
         return redirect()->route('producttable');
     }
 
-    public function showupdateproducttable($id)
+    public function showupdateproduct($id)
     {
-        $data = producttable::find($id)->join('specification','product.id', '=', 'specification.product_id')->get();
-        //$data = producttable::join('specification','product.id', '=', 'specification.product_id')->where('product.id',$id)->get();
+        //$data = producttable::find($id)->join('specification','product.id', '=', 'specification.product_id')->get();
+        $data = producttable::join('specification','product.id', '=', 'specification.product_id')->where('product.id',$id)->get();
         $categorylist = category::all();
         $oslist = os::all();
         $displaylist = display::all();
@@ -162,7 +148,7 @@ class ProducttableController extends Controller
         return view('admin.updateproducttable',compact('data','categorylist','oslist','displaylist','processorlist','graphicslist','memorylist','hard_drivelist','power_supplylist','batterylist'));
     }
 
-    public function updateproducttable(updateproductpostrequest $request, $id)
+    public function updateproduct(updateproductpostrequest $request, $id)
     {
         $data = producttable::find($id);
 
@@ -170,12 +156,7 @@ class ProducttableController extends Controller
         $data->product_category_id = $request->category;
         $data->product_price = $request->price;
         $data->feature = $request->feature;
-        $data->image = $request->image->getClientOriginalName();
-
-        $file = $request->image;
-        $file->move(base_path('public/asset/product/'),$file->getClientOriginalName());
-        //$file = $request->file('image');
-        //$file->move(base_path('public/asset/product/'), $file->getClientOriginalName());
+    
         $data->save();
 
         $specification = specification::where('product_id',$id)->first();
@@ -194,4 +175,46 @@ class ProducttableController extends Controller
         //->withSuccess('Product Added Successfully')
     }
 
+// customer view
+    public function products()
+    {   
+        $data = specification::join ( 'product' , 'specification.product_id', '=', 'product.id')
+                              ->join( 'os', 'specification.os', '=', 'os.id')
+                              ->join( 'processor', 'specification.processor', '=', 'processor.id')
+                              ->join( 'display', 'specification.display', '=', 'display.id')
+                              ->join( 'graphics', 'specification.graphics', '=', 'graphics.id')
+                              ->join( 'memory', 'specification.memory', '=', 'memory.id')
+                              ->join( 'hard_drive', 'specification.hard_drive', '=', 'hard_drive.id')
+                              ->join( 'power_supply', 'specification.power_supply', '=', 'power_supply.id')
+                              ->join( 'battery', 'specification.battery', '=', 'battery.id')
+                              ->join( 'category', 'category.id', '=', 'product.product_category_id')
+                              ->orderBy("product.id")
+                              ->select('product.id as product_id','product.product_title as product_title','category.category_name as category_name','product.product_price as product_price','product.feature as product_feature','product.image as product_image'
+                              ,'os.name as os_name','display.name as display_name','processor.name as processor_name','graphics.name as graphics_name','battery.name as battery_name','power_supply.name as power_supply_name','hard_drive.name as hard_drive_name',
+                              'memory.name as memory_name')
+                              ->get();
+        
+        return view('store.index',compact('data'));
+    }
+    
+    public function productdetails($id)
+    {   
+        $data = specification::join ( 'product' , 'specification.product_id', '=', 'product.id')
+                              ->join( 'os', 'specification.os', '=', 'os.id')
+                              ->join( 'processor', 'specification.processor', '=', 'processor.id')
+                              ->join( 'display', 'specification.display', '=', 'display.id')
+                              ->join( 'graphics', 'specification.graphics', '=', 'graphics.id')
+                              ->join( 'memory', 'specification.memory', '=', 'memory.id')
+                              ->join( 'hard_drive', 'specification.hard_drive', '=', 'hard_drive.id')
+                              ->join( 'power_supply', 'specification.power_supply', '=', 'power_supply.id')
+                              ->join( 'battery', 'specification.battery', '=', 'battery.id')
+                              ->join( 'category', 'category.id', '=', 'product.product_category_id')
+                              ->where('product.id',$id)
+                              ->select('product.id as product_id','product.product_title as product_title','category.category_name as category_name','product.product_price as product_price','product.feature as product_feature','product.image as product_image'
+                              ,'os.name as os_name','display.name as display_name','processor.name as processor_name','graphics.name as graphics_name','battery.name as battery_name','power_supply.name as power_supply_name','hard_drive.name as hard_drive_name',
+                              'memory.name as memory_name')
+                              ->get();
+        
+        return view('store.product',compact('data'));
+    }
 }

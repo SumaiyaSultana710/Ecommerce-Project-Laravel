@@ -40,7 +40,7 @@
                         <tr>
                           <td> <?php echo ++$i ?> </td>
                           <td class="py-1">
-                            <img src="../asset/product/{{$row->product_image}}" alt="image" />
+                            <img src="{{asset('asset/product')}}/{{$row->product_image}}" alt="image" />
                           </td>
                           <td> {{$row->product_title}} </td>
                           <td> {{$row->category_name}}  </td>
@@ -54,7 +54,7 @@
                           <td> {{$row->hard_drive_name}} </td>
                           <td> {{$row->battery_name}} </td>
                           <td> {{$row->product_price}} </td>
-                          <td> <a href="updateproducttable/{{$row->product_id}}">edit</a> <a href="removeproducttable/{{$row->product_id}}">delete</a>  </td>
+                          <td> <a href="{{route('updateproduct', [$row->product_id])}}">edit</a> <a href="{{route('removeproduct', [$row->product_id])}}">delete</a>  </td>
                         </tr>
                         @endforeach
                       </tbody>

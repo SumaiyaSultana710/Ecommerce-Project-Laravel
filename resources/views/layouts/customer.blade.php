@@ -119,7 +119,7 @@
                   More <i class="ion-android-arrow-dropdown"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li ><a href="{{ route('product') }}">Product</a></li>
+                  <li ><a href="{{ route('store') }}">Product</a></li>
                   <li><a href="{{ route('about') }}">About Us</a></li>
                   <li><a href="./checkout/">Checkout</a></li>
                   <li><a href="./faq/">FAQ</a></li>
